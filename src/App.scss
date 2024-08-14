@@ -1,0 +1,152 @@
+:root{
+  --type_1: "";
+  --type_2: "";
+  --fire: #f08030;
+  --water: #6890f0;
+  --grass: #78c850;
+  --electric: #f8d030;
+  --ice: #98d8d8;
+  --fighting: #c03028;
+  --poison: #a040a0;
+  --normal: #a8a878;
+  --flying: #bdafe7;
+  --rock: #b8a038;
+  --ghost: #705898;
+  --psychic: #f85888;
+  --fairy: #ee99ac;
+  --steel: #b8b8d0;
+  --bug: #a8b820;
+  --ground: #e0c068;
+  --dragon: #7038f8;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+
+.answer-container{
+  display: flex;
+  background-color: #5f5c5c5d;
+  border-radius:  8px;
+  width: fit-content;
+  padding: 12px;
+  gap: 12px;
+  max-width: 100%;
+  margin:0 auto;
+    input {
+    border-radius: 5px;
+    border: none;
+    padding: 10px;
+  }
+  button { 
+    margin :0;
+  }
+  
+}
+
+button {
+  margin: 1em 0;
+  border-radius: 5px;
+  border: none;
+  background-color: #1a1a1a;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+}
+
+.App{
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  width: 530px;
+
+  margin: auto;
+
+  @media (max-width: 768px){
+    width: 100%;
+  }
+  img{
+    height: 30%;
+    object-fit: contain;
+  }
+
+
+  .description {
+    margin: 30px 0;
+    max-width: 100%;
+    min-width: 70%;
+  }
+}
+
+.indice-wrapper{
+  display: flex;
+  height: fit-content;
+  gap: 10px;
+  button{
+    border: none;
+    p{
+      text-shadow: #1a1a1a 1px 1px 5px;
+    }
+    &.w-50{
+      width:50%;
+      padding: 5px;
+      height: 100%;
+      margin: 0;
+      &.bi-color{
+        background: linear-gradient(90deg, var(--type_1) 50%, var(--type_2) 50%);
+        
+      }
+    }
+  }
+
+  .type{
+    display: flex;
+    justify-content: space-around;
+  }
+  
+}
+
