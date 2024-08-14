@@ -56,7 +56,7 @@ function App() {
     ctx.restore();
   };
   
-  const [pokemonId, setPokemonId] = useState(randomId())
+  const [pokemonId, setPokemonId] = useState(32)
   const [currentUrl, setCurrentUrl] = useState("https://pokeapi.co/api/v2/pokemon-species/" + pokemonId)
 
   const [userInput, setUserInput] = useState("")
@@ -189,7 +189,7 @@ function App() {
         type="text"
         value={userInput}
         onChange={handleInputChange}
-        placeholder="Le nom du Pokémon"
+        placeholder="Pokémon"
         list="pokemon-list"
       />
       <datalist id="pokemon-list">

@@ -1,3 +1,7 @@
+
+*{ 
+  box-sizing: border-box;
+}
 :root{
   --type_1: "";
   --type_2: "";
@@ -29,6 +33,10 @@ body {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  @media screen and (max-width: 768px) {
+    padding: 0;
+    
+  }
 }
 
 .logo {
@@ -81,6 +89,11 @@ body {
     border-radius: 5px;
     border: none;
     padding: 10px;
+    width: inherit;
+    @media screen and (max-width: 768px) {
+      padding: 0 1rem;
+      width: 100%;
+    }
   }
   button { 
     margin :0;
@@ -107,7 +120,7 @@ button {
   margin: auto;
 
   @media (max-width: 768px){
-    width: 100%;
+    width: 90%;
   }
   img{
     height: 30%;
