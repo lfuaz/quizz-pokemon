@@ -56,7 +56,7 @@ function App() {
     ctx.restore();
   };
   
-  const [pokemonId, setPokemonId] = useState(32)
+  const [pokemonId, setPokemonId] = useState(randomId())
   const [currentUrl, setCurrentUrl] = useState("https://pokeapi.co/api/v2/pokemon-species/" + pokemonId)
 
   const [userInput, setUserInput] = useState("")
