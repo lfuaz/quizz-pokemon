@@ -1,44 +1,40 @@
-import { useEffect, useState } from 'react';
-import './App.scss';
-import { pokemonNames } from './pokemonList.js';
-import Confetti from 'react-confetti';
-import notFoundPhoto from "./assets/429.webp" 
-
-const randomId = () => Math.floor(Math.random() * 151) + 1;
-
-const capitalize = (str = '') => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
-
-export const ShowSolution = ({ correctAnswer }) => {
-  const c = capitalize(correctAnswer);
-  const [showSolution, setShowSolution] = useState(false);
-
-  const toggleSolution = () => {
-    setShowSolution(!showSolution);
-  };
-
-  return (
-    <>
-      <button className='action' onClick={toggleSolution}>
-        {showSolution ? 'Cacher la Solution' : 'Afficher la solution'}
-      </button>
-      {showSolution && <p>La bonne réponse est : {c}</p>}
-    </>
-  );
-};
+import { useEffect, useState } from "react";
+import "./App.scss";
+import { pokemonNames } from "./pokemonList";
+import Confetti from "react-confetti";
+import notFoundPhoto from "./assets/429.webp";
+import Solution from "./components/solution";
+import { randomId, capitalize } from "./utils/utils";
 
 function App() {
   const drawPokeball = (ctx) => {
     const paths = [
-      { path: "M297.6,380.9c-40.4,0-74.1-28.6-82.1-66.6H81.1c9.5,110.5,102.2,197.2,215.1,197.2s205.7-86.7,215.1-197.2H379.7C371.7,352.4,338,380.9,297.6,380.9z", color: "#FFFFFF" },
-      { path: "M345.6,505.9c89.6-21,157.7-97.7,165.7-191.6h-53C453,399.5,408.3,471.7,345.6,505.9z", color: "#FFFFFF" },
-      { path: "M347.1,297L347.1,297C347,297,347,297,347.1,297c-0.1-6.1-1.2-11.9-3.2-17.3c-7-18.8-25.1-32.1-46.3-32.1s-39.3,13.4-46.3,32.1c-2,5.4-3.1,11.2-3.1,17.3c0,0,0,0,0,0h0.1c0,0,0,0,0,0c0,6.1,1.1,11.9,3.1,17.3c7,18.8,25.1,32.1,46.3,32.1c21.2,0,39.3-13.4,46.3-32.1C346,309,347.1,303.1,347.1,297C347.1,297,347.1,297,347.1,297z", color: "#000000" },
-      { path: "M297.7,213.2c40.4,0,74.1,28.6,82.1,66.6h134.4C504.7,169.2,412,82.5,299,82.5S93.4,169.2,83.9,279.7h131.7C223.6,241.7,257.3,213.2,297.7,213.2z", color: "#FF0000" },
-      { path: "M458.3,279.7h55.8c-8.2-95.5-78.6-173.3-170.5-192.6C407.4,120.8,452.9,193.7,458.3,279.7z", color: "#FF0000" },
-      { path: "M299,82.5c113,0,205.7,86.7,215.1,197.2H379.7c-8-38-41.7-66.6-82.1-66.6c-40.4,0-74.1,28.6-82.1,66.6H83.9C93.4,169.2,186.1,82.5,299,82.5z M343.9,279.7c2,5.4,3.1,11.2,3.1,17.3c0,0,0,0,0,0h0.1c0,0,0,0,0,0c0,6.1-1.1,11.9-3.1,17.3c-7,18.8-25.1,32.1-46.3,32.1c-21.2,0-39.3-13.4-46.3-32.1c-2-5.4-3.1-11.2-3.1-17.3c0,0,0,0,0,0h-0.1c0,0,0,0,0,0c0-6.1,1.1-11.9,3.1-17.3c7-18.8,25.1-32.1,46.3-32.1S336.9,261,343.9,279.7z M296.2,511.6c-113,0-205.7-86.7-215.1-197.2h134.4c8,38,41.7,66.6,82.1,66.6s74.1-28.6,82.1-66.6h131.7C501.9,424.8,409.2,511.6,296.2,511.6z M297.6,41.3C156.4,41.3,41.9,155.8,41.9,297s114.5,255.7,255.7,255.7S553.4,438.3,553.4,297S438.9,41.3,297.6,41.3z", color: "#000000" }
+      {
+        path: "M297.6,380.9c-40.4,0-74.1-28.6-82.1-66.6H81.1c9.5,110.5,102.2,197.2,215.1,197.2s205.7-86.7,215.1-197.2H379.7C371.7,352.4,338,380.9,297.6,380.9z",
+        color: "#FFFFFF",
+      },
+      {
+        path: "M345.6,505.9c89.6-21,157.7-97.7,165.7-191.6h-53C453,399.5,408.3,471.7,345.6,505.9z",
+        color: "#FFFFFF",
+      },
+      {
+        path: "M347.1,297L347.1,297C347,297,347,297,347.1,297c-0.1-6.1-1.2-11.9-3.2-17.3c-7-18.8-25.1-32.1-46.3-32.1s-39.3,13.4-46.3,32.1c-2,5.4-3.1,11.2-3.1,17.3c0,0,0,0,0,0h0.1c0,0,0,0,0,0c0,6.1,1.1,11.9,3.1,17.3c7,18.8,25.1,32.1,46.3,32.1c21.2,0,39.3-13.4,46.3-32.1C346,309,347.1,303.1,347.1,297C347.1,297,347.1,297,347.1,297z",
+        color: "#000000",
+      },
+      {
+        path: "M297.7,213.2c40.4,0,74.1,28.6,82.1,66.6h134.4C504.7,169.2,412,82.5,299,82.5S93.4,169.2,83.9,279.7h131.7C223.6,241.7,257.3,213.2,297.7,213.2z",
+        color: "#FF0000",
+      },
+      {
+        path: "M458.3,279.7h55.8c-8.2-95.5-78.6-173.3-170.5-192.6C407.4,120.8,452.9,193.7,458.3,279.7z",
+        color: "#FF0000",
+      },
+      {
+        path: "M299,82.5c113,0,205.7,86.7,215.1,197.2H379.7c-8-38-41.7-66.6-82.1-66.6c-40.4,0-74.1,28.6-82.1,66.6H83.9C93.4,169.2,186.1,82.5,299,82.5z M343.9,279.7c2,5.4,3.1,11.2,3.1,17.3c0,0,0,0,0,0h0.1c0,0,0,0,0,0c0,6.1-1.1,11.9-3.1,17.3c-7,18.8-25.1,32.1-46.3,32.1c-21.2,0-39.3-13.4-46.3-32.1c-2-5.4-3.1-11.2-3.1-17.3c0,0,0,0,0,0h-0.1c0,0,0,0,0,0c0-6.1,1.1-11.9,3.1-17.3c7-18.8,25.1-32.1,46.3-32.1S336.9,261,343.9,279.7z M296.2,511.6c-113,0-205.7-86.7-215.1-197.2h134.4c8,38,41.7,66.6,82.1,66.6s74.1-28.6,82.1-66.6h131.7C501.9,424.8,409.2,511.6,296.2,511.6z M297.6,41.3C156.4,41.3,41.9,155.8,41.9,297s114.5,255.7,255.7,255.7S553.4,438.3,553.4,297S438.9,41.3,297.6,41.3z",
+        color: "#000000",
+      },
     ];
-  
+
     ctx.save();
     ctx.scale(0.1, 0.1); // Scale down to 10% of the original size
     paths.forEach(({ path, color }) => {
@@ -49,25 +45,24 @@ function App() {
     ctx.restore();
   };
   const [pokemonId, setPokemonId] = useState(randomId());
-  const [userInput, setUserInput] = useState('');
-  const [resultMessage, setResultMessage] = useState('');
+  const [userInput, setUserInput] = useState("");
+  const [resultMessage, setResultMessage] = useState("");
   const [isPokemonFound, setIsPokemonFound] = useState(false);
   const [descriptionIndex, setDescriptionIndex] = useState(0);
   const [showType, setShowType] = useState(false);
   const [type, setType] = useState([]);
   const [pokemon, setPokemon] = useState({});
 
-
   const handlePokemonChange = () => {
     setPokemonId(randomId());
-    setResultMessage(''); // Reset message
-    setUserInput(''); // Reset user input
+    setResultMessage(""); // Reset message
+    setUserInput(""); // Reset user input
     setIsPokemonFound(false); // Reset the found state
     setDescriptionIndex(0); // Reset the description index
   };
 
   const removeAllUtf8 = (str) => {
-    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   };
 
   const getPokemonDetail = async (pokemonId) => {
@@ -80,23 +75,29 @@ function App() {
     const data = await response.json();
 
     const name = removeAllUtf8(
-      data.names.filter((name) => name.language.name === 'fr')[0].name
+      data.names.filter((name) => name.language.name === "fr")[0].name
     ).toLowerCase();
 
     const descriptions = data.flavor_text_entries
       .filter((entry) => {
         return (
-          entry.language.name === 'fr' &&
-          !entry.flavor_text.toLowerCase().includes(removeAllUtf8(name).toLowerCase())
+          entry.language.name === "fr" &&
+          !entry.flavor_text
+            .toLowerCase()
+            .includes(removeAllUtf8(name).toLowerCase())
         );
       })
       .map((entry) => {
         return {
-          flavor_text: capitalize(removeAllUtf8(entry.flavor_text).toLowerCase()),
+          flavor_text: capitalize(
+            removeAllUtf8(entry.flavor_text).toLowerCase()
+          ),
         };
       });
 
-    const uniqueDescriptions = [...new Set(descriptions.map((item) => item.flavor_text))];
+    const uniqueDescriptions = [
+      ...new Set(descriptions.map((item) => item.flavor_text)),
+    ];
 
     const result = {
       name: name,
@@ -108,7 +109,9 @@ function App() {
   };
 
   const getTypeOfPokemon = async (pokemonId) => {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
+    const response = await fetch(
+      `https://pokeapi.co/api/v2/pokemon/${pokemonId}`
+    );
     const data = await response.json();
     const type = data.types.map((type) => type.type.name);
     setType(type);
@@ -134,10 +137,12 @@ function App() {
 
   const handleSubmit = () => {
     if (userInput.toLowerCase() === pokemon.name) {
-      setResultMessage('Bravo ! Vous avez trouvé le Pokémon !');
+      setResultMessage("Bravo ! Vous avez trouvé le Pokémon !");
       setIsPokemonFound(true);
     } else {
-      setResultMessage('Incorrect ! Essayez encore ou demandez une autre description.');
+      setResultMessage(
+        "Incorrect ! Essayez encore ou demandez une autre description."
+      );
     }
   };
 
@@ -151,17 +156,17 @@ function App() {
     <div className="App">
       <h1>Devinez le Pokémon !</h1>
       {isPokemonFound && (
-  <img 
-    src={pokemon.photo} 
-    alt={pokemon.name} 
-    onError={(e) => {
-      if (!e.target.dataset.fallback) {
-        e.target.src = notFoundPhoto;
-        e.target.dataset.fallback = "true";
-      }
-    }} 
-  />
-)}
+        <img
+          src={pokemon.photo}
+          alt={pokemon.name}
+          onError={(e) => {
+            if (!e.target.dataset.fallback) {
+              e.target.src = notFoundPhoto;
+              e.target.dataset.fallback = "true";
+            }
+          }}
+        />
+      )}
       <p className="description">{pokemon.descriptions[descriptionIndex]}</p>
       <div className="indice-wrapper">
         <button
@@ -172,17 +177,24 @@ function App() {
           Une autre descriptions
         </button>
         <button
-          className='bkg-color w-50'
+          className="bkg-color w-50"
           onClick={() => setShowType(!showType)}
         >
           <p className="types">
-            {!showType
-              ? <span className="type">? Type</span>
-              : type.map((type, index) => (
-                  <span key={index} className={`type type--${type} ${type.length < 1 ? "w-50" : "w-100"}`}>
-                    {type}
-                  </span>
-                ))}
+            {!showType ? (
+              <span className="type">? Type</span>
+            ) : (
+              type.map((type, index) => (
+                <span
+                  key={index}
+                  className={`type type--${type} ${
+                    type.length < 1 ? "w-50" : "w-100"
+                  }`}
+                >
+                  {type}
+                </span>
+              ))
+            )}
           </p>
         </button>
       </div>
@@ -199,27 +211,33 @@ function App() {
             <option key={index} value={name} />
           ))}
         </datalist>
-        <button className='action' onClick={handleSubmit}>Valider</button>
+        <button className="action" onClick={handleSubmit}>
+          Valider
+        </button>
       </div>
-      { resultMessage && (<p>{resultMessage}</p> )}
-      {resultMessage === 'Bravo ! Vous avez trouvé le Pokémon !' ? (
-        <>
-          <Confetti
-            width={innerWidth}
-            height={innerHeight}
-            numberOfPieces={80}
-            friction={1}
-            initialVelocityY={0}
-            initialVelocityX={0}
-            tweenDuration={10000}
-            drawShape={(ctx) => drawPokeball(ctx)}
-          />
-          <button class="action" onClick={handlePokemonChange}>Passer au suivant</button>
-        </>
+      {resultMessage && <p>{resultMessage}</p>}
+      {resultMessage === "Bravo ! Vous avez trouvé le Pokémon !" ? (
+        <Confetti
+          width={innerWidth}
+          height={innerHeight}
+          numberOfPieces={80}
+          friction={1}
+          initialVelocityY={0}
+          initialVelocityX={0}
+          tweenDuration={10000}
+          drawShape={(ctx) => drawPokeball(ctx)}
+        />
       ) : (
-        <button class="action" onClick={handlePokemonChange}>Passer à un autre Pokémon</button>
+        <>
+          <button className="action" onClick={handlePokemonChange}>
+            Passer au suivant
+          </button>
+          <button className="action" onClick={handlePokemonChange}>
+            Passer à un autre Pokémon
+          </button>
+        </>
       )}
-      <ShowSolution correctAnswer={pokemon.name} />
+      <Solution correctAnswer={pokemon.name} />
     </div>
   ) : null;
 }

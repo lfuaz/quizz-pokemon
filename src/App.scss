@@ -1,5 +1,4 @@
-
-*{ 
+* {
   box-sizing: border-box;
 }
 
@@ -20,7 +19,7 @@ $types: (
   steel: #b8b8d0,
   bug: #a8b820,
   ground: #e0c068,
-  dragon: #7038f8
+  dragon: #7038f8,
 );
 
 :root {
@@ -28,8 +27,6 @@ $types: (
     --#{$type}: #{$color};
   }
 }
-
-
 
 body {
   overflow-x: hidden;
@@ -41,7 +38,6 @@ body {
   text-align: center;
   @media screen and (max-width: 768px) {
     padding: 0;
-    
   }
 }
 
@@ -81,18 +77,17 @@ body {
   color: #888;
 }
 
-
-.answer-container{
+.answer-container {
   display: flex;
   background-color: #5f5c5c5d;
-  border-radius:  5px;
+  border-radius: 5px;
   width: fit-content;
   padding: 12px;
   gap: 12px;
   max-width: 100%;
-  margin:0 auto;
+  margin: 0 auto;
   padding: 1rem;
-    input {
+  input {
     border-radius: 5px;
     border: none;
     padding: 10px;
@@ -102,10 +97,9 @@ body {
       width: 100%;
     }
   }
-  button { 
-    margin :0;
+  button {
+    margin: 0;
   }
-  
 }
 
 button {
@@ -116,12 +110,12 @@ button {
   color: white;
   cursor: pointer;
   width: 100%;
-  &.action{
+  &.action {
     padding: 1rem;
   }
 }
 
-.App{
+.App {
   display: flex;
   flex-direction: column;
   height: 100dvh;
@@ -129,17 +123,15 @@ button {
   justify-content: center;
   gap: 10px;
 
-
   margin: auto;
 
-  @media (max-width: 768px){
+  @media (max-width: 768px) {
     width: 90%;
   }
-  img{
+  img {
     height: 20%;
     object-fit: contain;
   }
-
 
   .description {
     margin: 16px 0;
@@ -147,90 +139,78 @@ button {
     min-width: 70%;
   }
 
-  .indice-wrapper{
+  .indice-wrapper {
     display: flex;
     height: fit-content;
     gap: 10px;
     margin: 16px 0;
     height: 53px;
-  
-    
-    button{
+
+    button {
       border: none;
       padding: 0;
-      p{
+      p {
         text-shadow: #1a1a1a 1px 1px 5px;
         margin: 0;
       }
-      &.w-50{
-        width:50%;
+      &.w-50 {
+        width: 50%;
         height: 100%;
         margin: 0;
-        &.bi-color{
-          background: linear-gradient(90deg, var(--type_1) 50%, var(--type_2) 50%);
-          
+        &.bi-color {
+          background: linear-gradient(
+            90deg,
+            var(--type_1) 50%,
+            var(--type_2) 50%
+          );
         }
       }
-      
-      
     }
-  
-    
-  
+
     .bkg-color {
       margin: 0;
-      
-      .types{
-          margin: 0;
-          height: 100%;
-          width: 100%;
+
+      .types {
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        border-radius: 5px;
+
+        .type {
+          @each $type in map-keys($types) {
+            &--#{$type} {
+              background-color: var(--#{$type});
+            }
+          }
+
+          &.w-50 {
+            width: 50%;
+          }
+
+          &.w-100 {
+            width: 100%;
+          }
+          // first child
+          &:first-child {
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+          }
+
+          &:last-child {
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+          }
+        }
+
+        .type {
           display: flex;
-          border-radius: 5px;
-  
-          .type{
-            @each $type in map-keys($types) {
-              &--#{$type} {
-                background-color: var(--#{$type});
-              }
-            }
-  
-            &.w-50{
-              width: 50%;
-            }
-  
-            &.w-100{
-              width: 100%;
-            }
-            // first child
-            &:first-child{
-              border-top-left-radius: 5px;
-              border-bottom-left-radius: 5px;
-            }
-  
-            &:last-child{
-              border-top-right-radius: 5px;
-              border-bottom-right-radius: 5px;
-            }
-          }
-  
-          .type{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0.3rem;
-            margin: 0 auto;
-          }
-       
+          justify-content: center;
+          align-items: center;
+          padding: 0.3rem;
+          margin: 0 auto;
+        }
       }
-     
     }
-  
-  
-  
-   
-  
   }
-  
 }
-
-
