@@ -19,12 +19,12 @@ export const ShowSolution = ({ correctAnswer }) => {
   };
 
   return (
-    <div>
-      <button onClick={toggleSolution}>
+    <>
+      <button className='action' onClick={toggleSolution}>
         {showSolution ? 'Cacher la Solution' : 'Afficher la solution'}
       </button>
       {showSolution && <p>La bonne réponse est : {c}</p>}
-    </div>
+    </>
   );
 };
 
@@ -172,25 +172,20 @@ function App() {
           Une autre descriptions
         </button>
         <button
-          className={showType ? 'bi-color w-50' : 'w-50'}
-          style={{
-            '--type_1': `var(--${type[0]})`,
-            '--type_2': `var(--${type[1] || type[0]})`,
-          }}
+          className='bkg-color w-50'
           onClick={() => setShowType(!showType)}
         >
-          <p className="type">
+          <p className="types">
             {!showType
-              ? 'Type ? '
+              ? <span className="type">? Type</span>
               : type.map((type, index) => (
-                  <span key={index} className="type">
+                  <span key={index} className={`type type--${type} ${type.length < 1 ? "w-50" : "w-100"}`}>
                     {type}
                   </span>
                 ))}
           </p>
         </button>
       </div>
-      <br />
       <div className="answer-container">
         <input
           type="text"
@@ -204,9 +199,9 @@ function App() {
             <option key={index} value={name} />
           ))}
         </datalist>
-        <button onClick={handleSubmit}>Valider</button>
+        <button className='action' onClick={handleSubmit}>Valider</button>
       </div>
-      <p>{resultMessage}</p>
+      { resultMessage && (<p>{resultMessage}</p> )}
       {resultMessage === 'Bravo ! Vous avez trouvé le Pokémon !' ? (
         <>
           <Confetti
@@ -219,10 +214,10 @@ function App() {
             tweenDuration={10000}
             drawShape={(ctx) => drawPokeball(ctx)}
           />
-          <button onClick={handlePokemonChange}>Passer au suivant</button>
+          <button class="action" onClick={handlePokemonChange}>Passer au suivant</button>
         </>
       ) : (
-        <button onClick={handlePokemonChange}>Passer à un autre Pokémon</button>
+        <button class="action" onClick={handlePokemonChange}>Passer à un autre Pokémon</button>
       )}
       <ShowSolution correctAnswer={pokemon.name} />
     </div>

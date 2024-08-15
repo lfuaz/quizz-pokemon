@@ -2,27 +2,34 @@
 *{ 
   box-sizing: border-box;
 }
-:root{
-  --type_1: "";
-  --type_2: "";
-  --fire: #f08030;
-  --water: #6890f0;
-  --grass: #78c850;
-  --electric: #f8d030;
-  --ice: #98d8d8;
-  --fighting: #c03028;
-  --poison: #a040a0;
-  --normal: #a8a878;
-  --flying: #bdafe7;
-  --rock: #b8a038;
-  --ghost: #705898;
-  --psychic: #f85888;
-  --fairy: #ee99ac;
-  --steel: #b8b8d0;
-  --bug: #a8b820;
-  --ground: #e0c068;
-  --dragon: #7038f8;
+
+$types: (
+  fire: #f08030,
+  water: #6890f0,
+  grass: #78c850,
+  electric: #f8d030,
+  ice: #98d8d8,
+  fighting: #c03028,
+  poison: #a040a0,
+  normal: #a8a878,
+  flying: #bdafe7,
+  rock: #b8a038,
+  ghost: #705898,
+  psychic: #f85888,
+  fairy: #ee99ac,
+  steel: #b8b8d0,
+  bug: #a8b820,
+  ground: #e0c068,
+  dragon: #7038f8
+);
+
+:root {
+  @each $type, $color in $types {
+    --#{$type}: #{$color};
+  }
 }
+
+
 
 body {
   overflow-x: hidden;
@@ -31,7 +38,6 @@ body {
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
   @media screen and (max-width: 768px) {
     padding: 0;
@@ -79,12 +85,13 @@ body {
 .answer-container{
   display: flex;
   background-color: #5f5c5c5d;
-  border-radius:  8px;
+  border-radius:  5px;
   width: fit-content;
   padding: 12px;
   gap: 12px;
   max-width: 100%;
   margin:0 auto;
+  padding: 1rem;
     input {
     border-radius: 5px;
     border: none;
@@ -109,6 +116,9 @@ button {
   color: white;
   cursor: pointer;
   width: 100%;
+  &.action{
+    padding: 1rem;
+  }
 }
 
 .App{
@@ -116,6 +126,9 @@ button {
   flex-direction: column;
   height: 100dvh;
   width: 530px;
+  justify-content: center;
+  gap: 10px;
+
 
   margin: auto;
 
@@ -129,37 +142,95 @@ button {
 
 
   .description {
-    margin: 30px 0;
+    margin: 16px 0;
     max-width: 100%;
     min-width: 70%;
   }
-}
 
-.indice-wrapper{
-  display: flex;
-  height: fit-content;
-  gap: 10px;
-  button{
-    border: none;
-    p{
-      text-shadow: #1a1a1a 1px 1px 5px;
-    }
-    &.w-50{
-      width:50%;
-      padding: 5px;
-      height: 100%;
-      margin: 0;
-      &.bi-color{
-        background: linear-gradient(90deg, var(--type_1) 50%, var(--type_2) 50%);
-        
-      }
-    }
-  }
-
-  .type{
+  .indice-wrapper{
     display: flex;
-    justify-content: space-around;
+    height: fit-content;
+    gap: 10px;
+    margin: 16px 0;
+    height: 53px;
+  
+    
+    button{
+      border: none;
+      padding: 0;
+      p{
+        text-shadow: #1a1a1a 1px 1px 5px;
+        margin: 0;
+      }
+      &.w-50{
+        width:50%;
+        height: 100%;
+        margin: 0;
+        &.bi-color{
+          background: linear-gradient(90deg, var(--type_1) 50%, var(--type_2) 50%);
+          
+        }
+      }
+      
+      
+    }
+  
+    
+  
+    .bkg-color {
+      margin: 0;
+      
+      .types{
+          margin: 0;
+          height: 100%;
+          width: 100%;
+          display: flex;
+          border-radius: 5px;
+  
+          .type{
+            @each $type in map-keys($types) {
+              &--#{$type} {
+                background-color: var(--#{$type});
+              }
+            }
+  
+            &.w-50{
+              width: 50%;
+            }
+  
+            &.w-100{
+              width: 100%;
+            }
+            // first child
+            &:first-child{
+              border-top-left-radius: 5px;
+              border-bottom-left-radius: 5px;
+            }
+  
+            &:last-child{
+              border-top-right-radius: 5px;
+              border-bottom-right-radius: 5px;
+            }
+          }
+  
+          .type{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.3rem;
+            margin: 0 auto;
+          }
+       
+      }
+     
+    }
+  
+  
+  
+   
+  
   }
   
 }
+
 
