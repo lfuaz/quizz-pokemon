@@ -13,5 +13,7 @@ RUN npm install
 # Copy the rest of the application code to the working directory
 COPY . .
 
+RUN chmod +x /app/scripts/wait-for-it.sh
+
 # Expose the port that the API will listen on
 EXPOSE 3000
