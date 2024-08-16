@@ -15,6 +15,3 @@ COPY . .
 
 # Expose the port that the API will listen on
 EXPOSE 3000
-
-# Start the API
-CMD [ "npm", "run","start" ]
