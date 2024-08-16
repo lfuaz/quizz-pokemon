@@ -13,7 +13,7 @@ function App() {
   const [authentified, setAuthentified] = useState(
     sessionStorage.getItem("authentified") || false
   );
-  const [pokemonId, setPokemonId] = useState(35);
+  const [pokemonId, setPokemonId] = useState(randomId());
   const [userInput, setUserInput] = useState("");
   const [resultMessage, setResultMessage] = useState("");
   const [isPokemonFound, setIsPokemonFound] = useState(false);
