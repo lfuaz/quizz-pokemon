@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     environment:
       - VITE_API_URL=http://api:3000
+    ports:
+      - "4173:80"
     depends_on:
       - api
 
@@ -12,22 +14,22 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-      environment:
-        MYSQL_URI: mysql://${DB_USER}:${DB_PASSWORD}@db:${DB_PORT}/${DB_USER}
-        CORS_WHITELIST: ${CORS_WHITELIST}
-        JWT_SECRET: ${JWT_SECRET}
-        NODE_ENV: ${NODE_ENV}
+    environment:
+      MYSQL_URI: mysql://${DB_USER}:${DB_PASSWORD}@db:3306/${DB_USER}
+      CORS_WHITELIST: ${CORS_WHITELIST}
+      JWT_SECRET: ${JWT_SECRET}
+      NODE_ENV: ${NODE_ENV}
     depends_on:
       - db
+    ports:
+      - "3000:3000"
 
   db:
     image: mysql:8.2
     environment:
-      RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       MYSQL_DATABASE: ${DB_USER}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - ${DB_PORT}:3306
     volumes:
       - ./data:/var/lib/mysql
