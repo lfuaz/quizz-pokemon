@@ -10,6 +10,9 @@ import { pokemonNames } from "./data/pokemonNames.js";
 import Dialog from "./components/Dialog";
 
 function App() {
+  const [authentified, setAuthentified] = useState(
+    sessionStorage.getItem("authentified") || false
+  );
   const [pokemonId, setPokemonId] = useState(35);
   const [userInput, setUserInput] = useState("");
   const [resultMessage, setResultMessage] = useState("");
@@ -65,8 +68,14 @@ function App() {
         afterOpenModal={afterOpenModal}
         closeModal={closeModal}
         type={modalType}
+        authentified={authentified}
+        setAuthentified={setAuthentified}
       />
-      <Navigation openModal={openModal} />
+      <Navigation
+        openModal={openModal}
+        authentified={authentified}
+        setAuthentified={setAuthentified}
+      />
       <h1>Devinez le Pokémon !</h1>
       {isPokemonFound && <img src={pokemon.photo} alt={pokemon.name} />}
       <PokemonDescription

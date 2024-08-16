@@ -1,7 +1,12 @@
 import { Menu, MenuItem, MenuButton, SubMenu } from "@szhsin/react-menu";
 import { FaBars } from "react-icons/fa";
+import { disconnect } from "../services/auth.js";
 
-export default function Navigation({ openModal }) {
+export default function Navigation({
+  openModal,
+  authentified,
+  setAuthentified,
+}) {
   return (
     <Menu
       className={"navigation"}
@@ -11,9 +16,32 @@ export default function Navigation({ openModal }) {
         </MenuButton>
       }
     >
-      <MenuItem onClick={() => openModal("connexion")}>Se connecter</MenuItem>
-      <MenuItem onClick={() => openModal("inscription")}>S'inscrire</MenuItem>
-      <MenuItem>Mes Pokémons</MenuItem>
+      {authentified ? (
+        <>
+          <MenuItem onClick={() => openModal("profil")}>Mon profil</MenuItem>
+          <MenuItem
+            onClick={async () => {
+              try {
+                setAuthentified(false);
+                disconnect();
+              } catch (error) {
+                console.error(error);
+              }
+            }}
+          >
+            Se déconnecter
+          </MenuItem>
+        </>
+      ) : (
+        <>
+          <MenuItem onClick={() => openModal("connexion")}>
+            Se connecter
+          </MenuItem>
+          <MenuItem onClick={() => openModal("inscription")}>
+            S'inscrire
+          </MenuItem>
+        </>
+      )}
     </Menu>
   );
 }
