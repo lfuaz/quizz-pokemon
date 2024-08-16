@@ -1,0 +1,7 @@
+{
+  "name": "pokemon-game",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
