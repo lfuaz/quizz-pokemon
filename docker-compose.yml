@@ -26,7 +26,7 @@ services:
       - "3000:3000"
 
   db:
-    image: mysql:8.2
+    image: mariadb:11.5
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       MYSQL_DATABASE: ${DB_USER}
