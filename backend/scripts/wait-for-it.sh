@@ -2,17 +2,15 @@
 
 HOST=$1
 PORT=$2
-TIMEOUT=30  # Default to 30 seconds if no timeout is provided
+TIMEOUT=30
 
-# Optional: Allow timeout to be specified as the third argument
 if [ -n "$3" ]; then
   TIMEOUT=$3
 fi
 
-shift 3  # Remove the first three arguments (host, port, and optional timeout)
-COMMAND=("$@")  # Capture the remaining arguments as the command
+shift 3 
+COMMAND=("$@") 
 
-# Check if host and port are provided
 if [[ -z "$HOST" || -z "$PORT" ]]; then
   echo "Usage: $0 host port [timeout] -- command"
   exit 1
@@ -34,7 +32,6 @@ done
 
 echo "$HOST:$PORT is available!"
 
-# Execute the command after waiting
 if [ "${#COMMAND[@]}" -gt 0 ]; then
   echo "Executing command: ${COMMAND[*]}"
   exec "${COMMAND[@]}"
