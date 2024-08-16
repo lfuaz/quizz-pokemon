@@ -8,7 +8,7 @@ import { randomId, capitalize } from "./utils/utils";
 import { pokemonNames } from "./data/pokemonNames.js";
 
 function App() {
-  const [pokemonId, setPokemonId] = useState(randomId());
+  const [pokemonId, setPokemonId] = useState(35);
   const [userInput, setUserInput] = useState("");
   const [resultMessage, setResultMessage] = useState("");
   const [isPokemonFound, setIsPokemonFound] = useState(false);
@@ -38,7 +38,11 @@ function App() {
   };
 
   const handleNextDescription = () => {
-    if (descriptionIndex < pokemon.descriptions.length - 1) {
+    console.log(pokemon.descriptions);
+
+    console.log(descriptionIndex, pokemon.descriptions.length);
+
+    if (descriptionIndex < pokemon.descriptions.length) {
       setDescriptionIndex(descriptionIndex + 1);
     }
   };
@@ -50,7 +54,6 @@ function App() {
       <PokemonDescription
         descriptions={pokemon.descriptions}
         descriptionIndex={descriptionIndex}
-        handleNextDescription={handleNextDescription}
       />
       <div className="indice-wrapper">
         <Helper

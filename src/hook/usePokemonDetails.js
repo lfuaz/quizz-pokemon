@@ -6,41 +6,32 @@ export const usePokemonDetails = (pokemonId) => {
   const [type, setType] = useState([]);
 
   const getPokemonDetail = async (pokemonId) => {
-    const url = `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`;
-    const cachedData = sessionStorage.getItem(url);
-    if (cachedData) {
-      return JSON.parse(cachedData);
-    }
+    const apiUrl = `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`;
+    const cachedResponse = sessionStorage.getItem(apiUrl);
 
-    const response = await fetch(url);
-    const data = await response.json();
+    if (cachedResponse) return JSON.parse(cachedResponse);
 
-    const name = removeAllUtf8(
-      data.names.filter((name) => name.language.name === "fr")[0].name
+    const apiResponse = await fetch(apiUrl);
+    const pokemonData = await apiResponse.json();
+
+    const pokemonName = removeAllUtf8(
+      pokemonData.names.find((nameObj) => nameObj.language.name === "fr")
+        ?.name || ""
     ).toLowerCase();
 
-    const descriptions = data.flavor_text_entries
-      .filter(
-        (entry) =>
-          entry.language.name === "fr" &&
-          !entry.flavor_text
-            .toLowerCase()
-            .includes(removeAllUtf8(name).toLowerCase())
-      )
-      .map((entry) => ({
-        flavor_text: capitalize(removeAllUtf8(entry.flavor_text).toLowerCase()),
-      }));
+    const frenchDescriptions = [
+      ...new Set(
+        pokemonData.flavor_text_entries
+          .filter((entry) => entry.language.name === "fr")
+          .map((entry) =>
+            capitalize(removeAllUtf8(entry.flavor_text).toLowerCase())
+          )
+      ),
+    ].filter((description) => !description.includes(pokemonName));
 
-    const uniqueDescriptions = [
-      ...new Set(descriptions.map((item) => item.flavor_text)),
-    ];
+    const result = { name: pokemonName, descriptions: frenchDescriptions };
 
-    const result = {
-      name: name,
-      descriptions: uniqueDescriptions,
-    };
-
-    sessionStorage.setItem(url, JSON.stringify(result));
+    sessionStorage.setItem(apiUrl, JSON.stringify(result));
     return result;
   };
 

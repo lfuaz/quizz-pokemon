@@ -1,10 +1,6 @@
-import { compile } from "sass";
+const PokemonDescription = ({ descriptions, descriptionIndex }) => {
+  console.log(descriptions, descriptionIndex);
 
-const PokemonDescription = ({
-  descriptions,
-  descriptionIndex,
-  handleNextDescription,
-}) => {
   return (
     <div>
       <p className="description">{descriptions[descriptionIndex]}</p>
@@ -22,6 +18,8 @@ const Helper = ({
 }) => {
   const size = type.length > 1 ? "w-50" : "w-100";
 
+  console.log(descriptionIndex, descriptions.length - 1);
+
   return (
     <>
       <button
@@ -30,7 +28,7 @@ const Helper = ({
       >
         <p className="types">
           {!showType ? (
-            <span className="type">? Type</span>
+            <span className="type">Type ?</span>
           ) : (
             type.map((type, index) => (
               <span key={index} className={`type type--${type} ${size}`}>
