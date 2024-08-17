@@ -34,3 +34,8 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ./data:/var/lib/mysql
+
+  adminer:
+    image: adminer:latest
+    depends_on:
+      - db

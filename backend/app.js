@@ -6,7 +6,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { User } = require("./models"); // Correctly import User model
+const { User, Profile } = require("./models"); // Correctly import User model
 const db = require("./models");
 
 const app = express();
@@ -138,6 +138,16 @@ app.post("/auth/signup", async (req, res) => {
       email,
       password: hashedPassword,
     });
+
+    try {
+      await Profile.create({
+        bio: "Hello, I am new here!",
+        userId: newUser.id,
+        achivements: Array(151).fill(false),
+      });
+    } catch (error) {
+      throw new Error("Error creating profile");
+    }
 
     const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
