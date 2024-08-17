@@ -1,7 +1,7 @@
 //create a auth service using fetch api
 
 const api = async (endpoint, options) => {
-  const baseUrl = "https://i4ccwk4cg4g8sog0cos48g8c.florianurena.ovh";
+  const baseUrl = import.meta.env.VITE_API_URL;
   const url = `${baseUrl}${endpoint}`;
   const response = await fetch(url, options);
   return response;

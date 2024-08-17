@@ -1,0 +1,24 @@
+{
+  "development": {
+    "username": "mysql",
+    "password": "S4ts8tr3y17d6IK6hqQJ1xPkMN6kw8txBMmSXjIWRNCeI2QhIqJrXPKqqpdNbXSi",
+    "database": "default",
+    "host": "192.168.30.9",
+    "dialect": "mysql",
+    "port" : 3333
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "default",
+    "host": "db",
+    "dialect": "mysql"
+  }
+}

@@ -1,6 +1,10 @@
 # Stage 1: Build the application
 FROM node:16 AS builder
 
+ARG VITE_API_URL
+
+ENV VITE_API_URL=${VITE_API_URL}
+
 # Set working directory
 WORKDIR /app
 
@@ -12,6 +16,8 @@ RUN npm install
 
 # Copy the rest of the application code
 COPY . .
+
+RUN echo "VITE_API_URL=${VITE_API_URL}" > .env
 
 # Build the application
 RUN npm run build

@@ -6,8 +6,8 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const User = require("./models/user");
-const sequelize = require("./config/db");
+const { User } = require("./models"); // Correctly import User model
+const db = require("./models");
 
 const app = express();
 
@@ -31,12 +31,10 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+db.sequelize.sync();
 
 // JWT Secret Key
 const JWT_SECRET = process.env.JWT_SECRET;
-
-// Sync models with the database
-sequelize.sync();
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -154,9 +152,12 @@ app.post("/auth/signup", async (req, res) => {
 
     res.status(201).json({ message: translations[req.lang].userRegistered });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: translations[req.lang].errorRegistering, error });
+    console.log(error);
+
+    res.status(500).json({
+      message: translations[req.lang].errorRegistering,
+      error: error.message,
+    });
   }
 });
 
@@ -205,9 +206,12 @@ app.post("/auth/login", async (req, res) => {
       .status(200)
       .json({ message: translations[req.lang].loginSuccessful, token });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: translations[req.lang].errorLoggingIn, error });
+    console.log(error);
+
+    res.status(500).json({
+      message: translations[req.lang].errorLoggingIn,
+      error: error.message,
+    });
   }
 });
 
