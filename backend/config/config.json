@@ -15,9 +15,9 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "default",
+    "username": "userpoke",
+    "password": "sGil70hAExLlsMuI3OGc9TU465iJif5zdy6f4t4fGicCkSYDDasI29rTdzdRS0oG",
+    "database": "userpoke",
     "host": "db",
     "dialect": "mysql"
   }
