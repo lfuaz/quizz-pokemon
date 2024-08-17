@@ -14,7 +14,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile    
-    command: ["/bin/sh", "-c", "./scripts/wait-for-it.sh db 3306 -- npm run start"]
+    command: "/app/scripts/wait-for-it.sh -t 10 db:3306 -- npm run start"
     environment:
       MYSQL_URI: mysql://${DB_USER}:${DB_PASSWORD}@db:3306/${DB_USER}
       CORS_WHITELIST: ${CORS_WHITELIST}

@@ -1,6 +1,7 @@
 # Use the official Node.js image as the base image
 FROM node:21-alpine
 
+RUN apk add --no-cache bash
 # Set the working directory inside the container
 WORKDIR /app
 
