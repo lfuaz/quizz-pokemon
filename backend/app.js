@@ -139,7 +139,7 @@ async function updateAchievements(profile, achievementId) {
       throw new Error("Profile is not defined");
     }
 
-    if (!profile.achievements) {
+    if (!Array.isArray(profile.achievements)) {
       profile.achievements = [];
     }
 
