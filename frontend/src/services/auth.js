@@ -91,11 +91,42 @@ const auth = {
       throw new Error(error.message);
     }
   },
+
+  findPokemonId: async (pokemonId) => {
+    try {
+      const response = await api(
+        `/user/profil/achievement/success/${pokemonId}`,
+        {
+          method: "PUT",
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        // Handle non-2xx HTTP responses
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      return response;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+};
+
+const catchPokemon = async (pokemonId) => {
+  try {
+    await auth.findPokemonId(pokemonId);
+  } catch (error) {
+    throw error;
+  }
 };
 
 const sendRegister = async (email, password) => {
   try {
     await auth.signup(email, password);
+    sessionStorage.setItem("authentified", true);
   } catch (error) {
     throw error;
   }
@@ -129,4 +160,4 @@ const disconnect = async () => {
   }
 };
 
-export { sendRegister, sendConnexion, showProfil, disconnect };
+export { sendRegister, sendConnexion, showProfil, disconnect, catchPokemon };

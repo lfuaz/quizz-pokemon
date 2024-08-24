@@ -12,7 +12,7 @@ module.exports = {
       bio: {
         type: Sequelize.STRING,
       },
-      achivements: {
+      achievements: {
         type: Sequelize.JSON,
         defaultValue: Array(151).fill(false),
       },

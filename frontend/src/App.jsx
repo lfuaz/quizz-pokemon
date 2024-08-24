@@ -8,6 +8,8 @@ import { randomId, capitalize } from "./utils/utils";
 import Navigation from "./components/Navigation";
 import { pokemonNames } from "./data/pokemonNames.js";
 import Dialog from "./components/Dialog";
+import { useEffect } from "react";
+import { catchPokemon } from "./services/auth";
 
 function App() {
   const [authentified, setAuthentified] = useState(
@@ -60,6 +62,10 @@ function App() {
       setDescriptionIndex(descriptionIndex + 1);
     }
   };
+
+  useEffect(() => {
+    if (isPokemonFound) catchPokemon(pokemonId);
+  }, [isPokemonFound]);
 
   return pokemon.descriptions ? (
     <div className="App">
@@ -116,14 +122,14 @@ function App() {
       <button className="action" onClick={handlePokemonChange}>
         Passer à un autre Pokémon
       </button>
-      <button className="action" onClick={() => setShowSolution(!showSolution)}>
+      {/* <button className="action" onClick={() => setShowSolution(!showSolution)}>
         {!showSolution ? "Voir la solution" : "Cacher la solution"}
       </button>
       {showSolution && (
         <div>
           <p>Le Pokémon : {capitalize(pokemon.name)}</p>
         </div>
-      )}
+      )} */}
     </div>
   ) : null;
 }

@@ -16,13 +16,18 @@ module.exports = (sequelize, DataTypes) => {
 
   Profile.init(
     {
-      bio: DataTypes.STRING,
-      achivements: {
-        type: DataTypes.JSON,
-        defaultValue: Array(151).fill(false),
+      bio: {
+        type: DataTypes.STRING,
+        allowNull: true, // You might want to explicitly define if bio can be null or not
+      },
+      achievements: {
+        type: DataTypes.JSON, // Using JSON for achievements
+        defaultValue: [], // Default value is an empty array
+        allowNull: false, // Ensure it cannot be null
       },
       userId: {
         type: DataTypes.INTEGER,
+        allowNull: false, // Ensure userId cannot be null unless explicitly needed
         references: {
           model: "Users",
           key: "id",
@@ -34,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Profile",
+      tableName: "Profiles", // It's a good practice to explicitly define the table name
     }
   );
 

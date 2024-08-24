@@ -19,9 +19,11 @@ app.use(morgan("short"));
 app.use(cookieParser());
 
 const whitelist = process.env.CORS_WHITELIST.split(",");
+
 const corsOptions = {
   origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
+    // Allow requests with no origin (like Postman)
+    if (!origin || whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
@@ -53,6 +55,7 @@ const translations = {
     errorLoggingIn: "Error logging in",
     accessGranted: "Access granted to protected data",
     logoutSuccess: "Logout successful",
+    ProfileNotFound: "Profile not found",
   },
   fr: {
     noToken: "Aucun jeton fourni",
@@ -67,6 +70,7 @@ const translations = {
     errorLoggingIn: "Erreur lors de la connexion",
     accessGranted: "Accès accordé aux données protégées",
     logoutSuccess: "Déconnexion réussie",
+    ProfileNotFound: "Profil non trouvé",
   },
 };
 
@@ -84,8 +88,6 @@ const setLanguage = (req, res, next) => {
 app.use(setLanguage);
 
 const checkAuthToken = (req, res, next) => {
-  console.log(req.cookies);
-
   const token = req.cookies.authToken;
 
   if (!token) {
@@ -106,9 +108,87 @@ const checkAuthToken = (req, res, next) => {
   });
 };
 
-app.get("/auth/whoami", checkAuthToken, (req, res) => {
-  res.status(200).json({ user: req.user });
+app.get("/auth/whoami", checkAuthToken, async (req, res) => {
+  const user = await getProfile(req.user.id);
+
+  res.status(200).json({ user });
 });
+
+app.get("/user/profil", checkAuthToken, async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const profile = await getProfile(userId);
+    if (!profile) {
+      return res
+        .status(404)
+        .json({ message: translations[req.lang].ProfileNotFound });
+    }
+    res.status(200).json({ profile });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching profile", error: error.message });
+  }
+});
+
+// Function to update achievements
+async function updateAchievements(profile, achievementId) {
+  try {
+    if (!profile) {
+      throw new Error("Profile is not defined");
+    }
+
+    if (!profile.achievements) {
+      profile.achievements = [];
+    }
+
+    const achievements = profile.achievements;
+
+    if (
+      achievements.indexOf(parseInt(achievementId)) === -1 &&
+      achievementId <= 151 &&
+      achievementId >= 1
+    ) {
+      achievements.push(parseInt(achievementId));
+      await profile.update({ achievements });
+      await profile.changed("achievements", true); // force update because it's a JSON complex type
+      await profile.save();
+      return profile;
+    } else {
+      throw new Error("Achievement already unlocked or invalid ID");
+    }
+  } catch (error) {
+    throw new Error("Error updating achievements: " + error.message);
+  }
+}
+app.put(
+  "/user/profil/achievement/success/:id",
+  checkAuthToken,
+  async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const achievementId = req.params.id;
+
+      const profile = await getProfile(userId);
+      if (!profile) {
+        return res
+          .status(404)
+          .json({ message: translations[req.lang].ProfileNotFound });
+      }
+
+      const updatedProfile = await updateAchievements(profile, achievementId);
+      console.log("Achievements after update:", updatedProfile.achievements);
+
+      res.status(200).json({ message: "Achievement unlocked" });
+    } catch (error) {
+      console.error("Error:", error);
+      res
+        .status(500)
+        .json({ message: "Error unlocking achievement", error: error.message });
+    }
+  }
+);
 
 // User registration route
 app.post("/auth/signup", async (req, res) => {
@@ -143,7 +223,7 @@ app.post("/auth/signup", async (req, res) => {
       await Profile.create({
         bio: "Hello, I am new here!",
         userId: newUser.id,
-        achivements: Array(151).fill(false),
+        achievements: Array(151).fill(false),
       });
     } catch (error) {
       throw new Error("Error creating profile");
@@ -242,3 +322,12 @@ app.get("/auth/logout", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+// Function to get the profile
+async function getProfile(userId) {
+  try {
+    return await Profile.findOne({ where: { userId } });
+  } catch (error) {
+    throw new Error("Error fetching profile");
+  }
+}
