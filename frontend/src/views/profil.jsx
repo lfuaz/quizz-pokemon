@@ -22,6 +22,10 @@ const Profil = React.memo(() => {
     fetchData();
   }, []); // Ensure the dependency array is empty to run only once on mount
 
+  useEffect(() => {
+    if (data) console.log(data.user.achievements);
+  }, [data]);
+
   return data ? (
     <div>
       <h2>Profil</h2>

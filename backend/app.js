@@ -145,8 +145,6 @@ async function updateAchievements(profile, achievementId) {
 
     const achievements = profile.achievements;
 
-    console.log("Achievements before update:", achievements);
-
     if (
       achievements.indexOf(parseInt(achievementId)) === -1 &&
       achievementId <= 151 &&

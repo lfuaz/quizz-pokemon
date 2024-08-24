@@ -23,11 +23,15 @@ export const usePokemonDetails = (pokemonId) => {
       ...new Set(
         pokemonData.flavor_text_entries
           .filter((entry) => entry.language.name === "fr")
-          .map((entry) =>
-            capitalize(removeAllUtf8(entry.flavor_text).toLowerCase())
+          .map((entry) => removeAllUtf8(entry.flavor_text).toLowerCase())
+          .filter(
+            (description) => !description.includes(removeAllUtf8(pokemonName))
           )
+          .map(capitalize)
       ),
-    ].filter((description) => !description.includes(pokemonName));
+    ];
+
+    console.log(frenchDescriptions);
 
     const result = { name: pokemonName, descriptions: frenchDescriptions };
 
