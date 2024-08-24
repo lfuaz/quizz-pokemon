@@ -40,7 +40,12 @@ const DrawPokeball = () => {
   };
 
   return (
-    <Confetti numberOfPieces={80} drawShape={(ctx) => drawPokeballSVG(ctx)} />
+    <Confetti
+      width={window.innerWidth}
+      height={window.innerHeight}
+      numberOfPieces={80}
+      drawShape={(ctx) => drawPokeballSVG(ctx)}
+    />
   );
 };
 

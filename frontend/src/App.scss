@@ -112,6 +112,93 @@ button {
   width: 100%;
   &.action {
     padding: 1rem;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    &.catch {
+      height: fit-content;
+
+      width: 100%;
+      display: flex;
+      background-color: transparent;
+      flex-direction: column;
+      align-items: center;
+
+      padding: 0;
+
+      background-color: #fff;
+      color: #000;
+      border-radius: 5px;
+      padding: 0.5rem;
+      animation: slideInInfo 0.5s ease-out;
+      outline: 0;
+      border: none;
+      -moz-outline-style: none;
+
+      &.failed {
+        img {
+          animation: none;
+          filter: grayscale(100%);
+        }
+      }
+
+      img {
+        width: fit-content;
+        height: 80px;
+        outline: none;
+        &.catching {
+          animation: rotate_ball 5s ease-in-out both;
+        }
+
+        &.caught {
+          filter: brightness(0.7);
+          position: relative;
+        }
+
+        &.failed {
+          filter: grayscale(100%);
+        }
+
+        @keyframes rotate_ball {
+          0% {
+            rotate: 0deg;
+            scale: 1;
+          }
+
+          50% {
+            rotate: 360deg;
+            scale: 0.4;
+          }
+
+          80% {
+            rotate: 720deg;
+            scale: 1;
+          }
+
+          85% {
+            rotate: 735deg;
+          }
+
+          90% {
+            rotate: 705deg;
+          }
+
+          100% {
+            rotate: 750deg;
+          }
+        }
+        &:active,
+        &:focus {
+          outline: 0;
+          border: none;
+          -moz-outline-style: none;
+        }
+      }
+      p {
+        color: #000;
+        width: fit-content;
+      }
+    }
   }
 
   &.navigation-btn {
@@ -350,6 +437,15 @@ button {
 @keyframes slideIn {
   from {
     transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInInfo {
+  from {
+    transform: translateY(20%);
   }
   to {
     transform: translateY(0);

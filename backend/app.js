@@ -178,7 +178,6 @@ app.put(
       }
 
       const updatedProfile = await updateAchievements(profile, achievementId);
-      console.log("Achievements after update:", updatedProfile.achievements);
 
       res.status(200).json({ message: "Achievement unlocked" });
     } catch (error) {
