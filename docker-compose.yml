@@ -26,12 +26,14 @@ services:
       - "3000:3000"
 
   db:
-    image: mariadb:11.5.2
+    image: mariadb:11.5
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       MYSQL_DATABASE: ${DB_USER}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./data:/var/lib/mysql
 
   adminer:
     image: adminer:latest
