@@ -14,7 +14,7 @@ module.exports = {
       },
       achievements: {
         type: Sequelize.JSON,
-        defaultValue: Array(151).fill(false),
+        defaultValue: [],
       },
       userId: {
         type: Sequelize.INTEGER,

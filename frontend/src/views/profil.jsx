@@ -22,16 +22,12 @@ const Profil = React.memo(() => {
     fetchData();
   }, []); // Ensure the dependency array is empty to run only once on mount
 
-  useEffect(() => {
-    if (data) console.log(data.user.achievements);
-  }, [data]);
-
   return data ? (
     <div>
       <h2>Profil</h2>
       <div className="pokemon-list">
         {pokemons.map((pokemon, index) =>
-          data.user.achievements.indexOf(index + 1) == -1 ? (
+          JSON.parse(data.user.achievements).indexOf(index + 1) == -1 ? (
             <div key={index} className="pokemon">
               <FaQuestion
                 style={{

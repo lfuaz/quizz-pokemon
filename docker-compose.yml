@@ -16,7 +16,7 @@ services:
       dockerfile: Dockerfile    
     command: "/app/scripts/wait-for-it.sh -t 10 db:3306 -- npm run start"
     environment:
-      MYSQL_URI: mysql://${DB_USER}:${DB_PASSWORD}@db:3306/mysql
+      MYSQL_URI: mysql://${DB_USER}:${DB_PASSWORD}@db:3306/${DB_USER}
       CORS_WHITELIST: ${CORS_WHITELIST}
       JWT_SECRET: ${JWT_SECRET}
       NODE_ENV: ${NODE_ENV}
@@ -26,10 +26,12 @@ services:
       - "3000:3000"
 
   db:
-    image: mysql:8.4.2
+    image: maraidb:11.5
     environment:
-      MYSQL_ROOT_HOST: "%"
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: ${DB_USER}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
 
   adminer:
     image: adminer:latest

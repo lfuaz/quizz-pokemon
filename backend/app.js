@@ -139,11 +139,7 @@ async function updateAchievements(profile, achievementId) {
       throw new Error("Profile is not defined");
     }
 
-    if (!Array.isArray(profile.achievements)) {
-      profile.achievements = [];
-    }
-
-    const achievements = profile.achievements;
+    const achievements = JSON.parse(profile.achievements);
 
     if (
       achievements.indexOf(parseInt(achievementId)) === -1 &&
@@ -177,7 +173,7 @@ app.put(
           .json({ message: translations[req.lang].ProfileNotFound });
       }
 
-      const updatedProfile = await updateAchievements(profile, achievementId);
+      await updateAchievements(profile, achievementId);
 
       res.status(200).json({ message: "Achievement unlocked" });
     } catch (error) {
@@ -222,7 +218,6 @@ app.post("/auth/signup", async (req, res) => {
       await Profile.create({
         bio: "Hello, I am new here!",
         userId: newUser.id,
-        achievements: Array(151).fill(false),
       });
     } catch (error) {
       throw new Error("Error creating profile");

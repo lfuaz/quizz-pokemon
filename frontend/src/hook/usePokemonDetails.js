@@ -31,7 +31,7 @@ export const usePokemonDetails = (pokemonId) => {
       ),
     ];
 
-    console.log(frenchDescriptions);
+    frenchDescriptions.sort(() => Math.random() - 0.5);
 
     const result = { name: pokemonName, descriptions: frenchDescriptions };
 

@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "mysql",
-    "password": "S4ts8tr3y17d6IK6hqQJ1xPkMN6kw8txBMmSXjIWRNCeI2QhIqJrXPKqqpdNbXSi",
+    "username": "mariadb",
+    "password": "gk3pC1LIcgwkXRytGIOK4sUTHYr0MtFSRQdbRpHz5CAZuqXL9lpEaAd9Mc1vpNsS",
     "database": "default",
     "host": "192.168.30.9",
     "dialect": "mysql",
@@ -15,9 +15,9 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": "sGil70hAExLlsMuI3OGc9TU465iJif5zdy6f4t4fGicCkSYDDasI29rTdzdRS0oG",
-    "database": "mysql",
+    "username": "pokequizz",
+    "password": "gk3pC1LIcgwkXRytGIOK4sUTHYr0MtFSRQdbRpHz5CAZuqXL9lpEaAd9Mc1vpNsS",
+    "database": "pokequizz",
     "host": "db",
     "dialect": "mysql"
   }
