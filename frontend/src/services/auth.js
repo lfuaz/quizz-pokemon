@@ -50,7 +50,7 @@ const auth = {
 
       return response;
     } catch (error) {
-      throw new Error(`Erreur lors de la connexion`);
+      throw new Error(error.message);
     }
   },
 

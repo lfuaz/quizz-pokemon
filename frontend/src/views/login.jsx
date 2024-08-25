@@ -1,4 +1,6 @@
 import { disconnect } from "../services/auth";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useState } from "react";
 
 export default function Login({
   closeModal,
@@ -8,6 +10,8 @@ export default function Login({
   setState,
   sendConnexion,
 }) {
+  const [showPassword, setShowPassword] = useState(false);
+
   return !authentified ? (
     <div>
       <h2>Connexion</h2>
@@ -33,12 +37,21 @@ export default function Login({
           name="email"
           placeholder="email"
         />
-        <input
-          type="password"
-          className="field"
-          name="password"
-          placeholder="password"
-        />
+        <div className="item-field">
+          <input
+            type={showPassword ? "text" : "password"}
+            className="field"
+            name="password"
+            placeholder="password"
+          />
+          <button
+            className="hide-button"
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
         {<button type="submit">Se connecter</button>}
       </form>
     </div>

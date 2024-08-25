@@ -355,27 +355,61 @@ button {
     flex-direction: column;
     gap: 10px;
     padding: 1rem;
-  }
-  input {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 1rem 0 1rem 0.5rem;
-    border-radius: 5px;
-    border: none;
 
-    background-color: #5f5c5c;
-    &:user-valid {
-      border-color: rgb(126, 245, 126);
+    .item-field {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-radius: 5px;
+      border: none;
+      position: relative;
+
+      background-color: #5f5c5c;
+      &:user-valid {
+        border-color: rgb(126, 245, 126);
+      }
+      &:user-invalid {
+        border-color: rgb(245, 126, 126);
+      }
+      &::placeholder {
+        color: #888;
+      }
+      .hide-button {
+        display: flex;
+        justify-content: flex-start;
+        position: absolute;
+        width: fit-content;
+        right: 5%;
+        background-color: transparent;
+        &:active,
+        &:focus {
+          outline: 0;
+          border: none;
+          -moz-outline-style: none;
+        }
+      }
     }
-    &:user-invalid {
-      border-color: rgb(245, 126, 126);
-    }
-    &::placeholder {
-      color: #888;
+
+    input {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 1rem 0 1rem 0.5rem;
+      border-radius: 5px;
+      border: none;
+
+      background-color: #5f5c5c;
+      &:user-valid {
+        border-color: rgb(126, 245, 126);
+      }
+      &:user-invalid {
+        border-color: rgb(245, 126, 126);
+      }
+      &::placeholder {
+        color: #888;
+      }
     }
   }
-
   .message-info {
     &--error {
       background-color: #f57e7e;

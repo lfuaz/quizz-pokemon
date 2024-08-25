@@ -1,4 +1,9 @@
+import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 export default function Register({ setMessageInfo, setState, sendRegister }) {
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <div>
       <h2>Inscription</h2>
@@ -23,26 +28,34 @@ export default function Register({ setMessageInfo, setState, sendRegister }) {
           }
         }}
       >
-        <input
-          type="email"
-          className="field"
-          name="email"
-          placeholder="email"
-        />
-        <input
-          type="password"
-          className="field"
-          name="password"
-          placeholder="password"
-          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-        />
-        <input
-          type="password"
-          className="field"
-          name="valid-password"
-          placeholder="verify password"
-          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-        />
+        <input type="email" name="email" id="email" />
+        <div className="item-field">
+          <input
+            type={showPassword ? "text" : "password"}
+            id="password"
+            className="field"
+            name="password"
+            placeholder="password"
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+          />
+          <button
+            className="hide-button"
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
+        <div className="item-field">
+          <input
+            type={showPassword ? "text" : "password"}
+            className="field"
+            id="valid-password"
+            name="valid-password"
+            placeholder="verify password"
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+          />
+        </div>
         <button type="submit">S'inscrire</button>
       </form>
     </div>

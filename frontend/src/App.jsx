@@ -140,6 +140,7 @@ function App() {
           onChange={(e) => setUserInput(e.target.value)}
           placeholder="Pokémon"
           list="pokemon-list"
+          name="pokemon search"
         />
         <datalist id="pokemon-list">
           {pokemonNames.map((name, index) => (
