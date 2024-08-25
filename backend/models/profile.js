@@ -3,13 +3,7 @@ const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Profile extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // Define association here
       Profile.belongsTo(models.User, { foreignKey: "userId", as: "user" });
     }
   }
@@ -18,16 +12,16 @@ module.exports = (sequelize, DataTypes) => {
     {
       bio: {
         type: DataTypes.STRING,
-        allowNull: true, // You might want to explicitly define if bio can be null or not
+        allowNull: true,
       },
       achievements: {
-        type: DataTypes.JSON, // Using JSON for achievements
-        defaultValue: [], // Default value is an empty array
-        allowNull: false, // Ensure it cannot be null
+        type: DataTypes.JSON,
+        defaultValue: [],
+        allowNull: false,
       },
       userId: {
         type: DataTypes.INTEGER,
-        allowNull: false, // Ensure userId cannot be null unless explicitly needed
+        allowNull: true, // Allow NULL to satisfy the foreign key constraint
         references: {
           model: "Users",
           key: "id",
@@ -39,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Profile",
-      tableName: "Profiles", // It's a good practice to explicitly define the table name
+      tableName: "Profiles",
     }
   );
 
