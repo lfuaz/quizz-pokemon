@@ -9,7 +9,21 @@ import ily from "../assets/ily.png";
 const Profil = React.memo(() => {
   const [data, setData] = useState(null);
   const [showShiny, setShowShiny] = useState(false);
+  const [spawn, setSpawn] = useState(0);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSpawn((spawn) => {
+        if (spawn < 10) {
+          return spawn + 1;
+        } else {
+          clearInterval(interval);
+          return spawn;
+        }
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
   const pokemons = new Array(151).fill(false);
 
   const fetchData = async () => {
@@ -65,7 +79,7 @@ const Profil = React.memo(() => {
               </div>
             )
           )
-        ) : (
+        ) : spawn === 10 ? (
           <img
             src={ily}
             style={{
@@ -77,6 +91,8 @@ const Profil = React.memo(() => {
               transform: "translate(-50%, -50%)",
             }}
           />
+        ) : (
+          <p>spawn de shiny dans {parseInt(10 - parseInt(spawn))} s'</p>
         )}
       </div>
     </>
