@@ -113,6 +113,34 @@ const auth = {
       throw new Error(error.message);
     }
   },
+
+  checkAuthToken: async () => {
+    try {
+      const response = await api("/auth/session", {
+        method: "GET",
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        // Handle non-2xx HTTP responses
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      return response;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+};
+
+const checkHealthToken = async () => {
+  try {
+    const response = await auth.checkAuthToken();
+    return response;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const catchPokemon = async (pokemonId) => {
@@ -160,4 +188,11 @@ const disconnect = async () => {
   }
 };
 
-export { sendRegister, sendConnexion, showProfil, disconnect, catchPokemon };
+export {
+  sendRegister,
+  sendConnexion,
+  showProfil,
+  disconnect,
+  catchPokemon,
+  checkHealthToken,
+};

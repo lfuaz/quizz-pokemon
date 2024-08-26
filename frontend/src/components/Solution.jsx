@@ -11,9 +11,9 @@ export default function Solution({ correctAnswer }) {
 
   return (
     <>
-      <button className="action" onClick={toggleSolution}>
+      <div className="action" onClick={toggleSolution}>
         {showSolution ? "Cacher la Solution" : "Afficher la solution"}
-      </button>
+      </div>
       {showSolution && <p>La bonne réponse est : {c}</p>}
     </>
   );

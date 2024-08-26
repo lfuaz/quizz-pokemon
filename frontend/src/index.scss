@@ -22,14 +22,6 @@ a:hover {
   color: #535bf2;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -63,5 +55,63 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+.notif {
+  &.success {
+    background-color: #4caf50;
+    color: #8cec8f;
+  }
+
+  &.error {
+    background-color: #f44336;
+    color: #ff8a80;
+  }
+
+  &.warning {
+    background-color: #ff9800;
+    color: #ffcc80;
+  }
+
+  &.info {
+    background-color: #2196f3;
+    color: #81d4fa;
+  }
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: all 0.5s ease;
+  transition: width 0.5s ease; // Add this line for smooth width transition
+
+  .notif-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 0.3rem;
+  }
+
+  .notif-content {
+    display: none;
+  }
+
+  &:active {
+    padding: 0.2rem 1rem;
+    width: fit-content;
+    background-color: #ff9800;
+    color: #ffffff;
+
+    .notif-icon {
+      display: none;
+    }
+
+    .notif-content {
+      display: block;
+    }
   }
 }

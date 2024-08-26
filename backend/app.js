@@ -97,6 +97,11 @@ const checkAuthToken = (req, res, next) => {
   // Verify the JWT token
   jwt.verify(token, JWT_SECRET, (err, decoded) => {
     if (err) {
+      if (err.name === "TokenExpiredError") {
+        return res
+          .status(401)
+          .json({ message: translations[req.lang].tokenExpired });
+      }
       return res
         .status(500)
         .json({ message: translations[req.lang].failedAuth });
@@ -297,6 +302,10 @@ app.post("/auth/login", async (req, res) => {
       error: error.message,
     });
   }
+});
+
+app.get("/auth/session", checkAuthToken, (req, res) => {
+  res.status(200).json({ message: "Session is still active" });
 });
 
 // Protected route
