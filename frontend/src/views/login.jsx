@@ -9,11 +9,13 @@ export default function Login({
   setMessageInfo,
   setState,
   sendConnexion,
+  setMessage,
+  setTypeMessage,
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
   return !authentified ? (
-    <div>
+    <>
       <h2>Connexion</h2>
       <form
         onSubmit={async (e) => {
@@ -25,8 +27,12 @@ export default function Login({
             await sendConnexion(email, password);
             closeModal();
             setAuthentified(true);
+            setMessage("Connexion réussie");
+            setTypeMessage("success");
           } catch (error) {
             setMessageInfo(error.message);
+            setMessage("Connexion échouée");
+            setTypeMessage("error");
             setState("error");
           }
         }}
@@ -54,9 +60,9 @@ export default function Login({
         </div>
         {<button type="submit">Se connecter</button>}
       </form>
-    </div>
+    </>
   ) : (
-    <div>
+    <>
       <h2>Connexion</h2>
       <p className="message-info--info">Vous êtes connecté.</p>
       <button
@@ -68,6 +74,6 @@ export default function Login({
       >
         Se déconnecter
       </button>
-    </div>
+    </>
   );
 }

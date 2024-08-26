@@ -5,7 +5,7 @@ export default function Register({ setMessageInfo, setState, sendRegister }) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div>
+    <>
       <h2>Inscription</h2>
       <form
         onSubmit={async (e) => {
@@ -58,6 +58,6 @@ export default function Register({ setMessageInfo, setState, sendRegister }) {
         </div>
         <button type="submit">S'inscrire</button>
       </form>
-    </div>
+    </>
   );
 }

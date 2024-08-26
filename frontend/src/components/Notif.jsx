@@ -1,26 +1,21 @@
 import { FaInfoCircle } from "react-icons/fa";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function Notif({ message, type }) {
   const icon = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleNotif = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <>
-      <div
-        className={`notif ${type}`}
-        onMouseOver={() => {
-          icon.current.style.visibility = "none";
-        }}
-        onMouseOut={() => {
-          icon.current.style.visibility = "visible";
-        }}
-
-        // Add an onMouseUp event listener to the div element
-      >
-        <div className="notif-icon" ref={icon}>
+      <div className={`notif ${type}`} onClick={toggleNotif}>
+        <div className={"notif-icon " + isOpen} ref={icon}>
           <FaInfoCircle />
         </div>
-        <div className="notif-content">{message}</div>
+        {isOpen && <div className="notif-content">{message}</div>}
       </div>
     </>
   );

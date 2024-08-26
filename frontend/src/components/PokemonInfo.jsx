@@ -1,9 +1,5 @@
 const PokemonDescription = ({ descriptions, descriptionIndex }) => {
-  return (
-    <div>
-      <p className="description">{descriptions[descriptionIndex]}</p>
-    </div>
-  );
+  return <p className="description">{descriptions[descriptionIndex]}</p>;
 };
 
 const Helper = ({

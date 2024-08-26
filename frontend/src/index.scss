@@ -23,8 +23,13 @@ a:hover {
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 2.2rem;
+  line-height: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 3rem auto 1rem;
 }
 
 button {
@@ -39,10 +44,6 @@ button {
 }
 button:hover {
   border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
 @media (prefers-color-scheme: light) {
@@ -70,8 +71,9 @@ button:focus-visible {
   }
 
   &.warning {
-    background-color: #ff9800;
-    color: #ffcc80;
+    background-color: #ff990062;
+    color: #fce8ca;
+    font-weight: 400;
   }
 
   &.info {
@@ -88,30 +90,20 @@ button:focus-visible {
   z-index: 1000;
   animation: all 0.5s ease;
   transition: width 0.5s ease; // Add this line for smooth width transition
+  padding: 0.2rem 0.3rem;
 
   .notif-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.4rem 0.3rem;
-  }
 
-  .notif-content {
-    display: none;
-  }
-
-  &:active {
-    padding: 0.2rem 1rem;
-    width: fit-content;
-    background-color: #ff9800;
-    color: #ffffff;
-
-    .notif-icon {
+    &.true {
       display: none;
     }
 
-    .notif-content {
-      display: block;
+    &.false {
+      display: flex;
+      padding: 0.2rem;
     }
   }
 }

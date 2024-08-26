@@ -12,6 +12,8 @@ export default function Dialog({
   type,
   authentified,
   setAuthentified,
+  setMessage,
+  setTypeMessage,
 }) {
   const [messageInfo, setMessageInfo] = useState("");
   const [state, setState] = useState("");
@@ -56,6 +58,8 @@ export default function Dialog({
               closeModal={closeModal}
               setAuthentified={setAuthentified}
               authentified={authentified}
+              setMessage={setMessage}
+              setTypeMessage={setTypeMessage}
             />
           );
 
