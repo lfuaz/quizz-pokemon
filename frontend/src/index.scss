@@ -60,6 +60,17 @@ button:hover {
 }
 
 .notif {
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: all 0.5s ease;
+  transition: width 0.5s ease; // Add this line for smooth width transition
+  padding: 0.2rem 0.3rem;
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 1rem;
+
   &.success {
     background-color: #4caf50;
     color: #8cec8f;
@@ -80,17 +91,6 @@ button:hover {
     background-color: #2196f3;
     color: #81d4fa;
   }
-
-  position: fixed;
-  top: 0;
-  right: 0;
-  margin: 1rem;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  animation: all 0.5s ease;
-  transition: width 0.5s ease; // Add this line for smooth width transition
-  padding: 0.2rem 0.3rem;
 
   .notif-icon {
     display: flex;
