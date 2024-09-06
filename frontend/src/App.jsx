@@ -83,6 +83,7 @@ function App() {
   };
 
   const handleSubmit = () => {
+    if (userInput === "") return;
     if (userInput.toLowerCase() === pokemon.name) {
       setResultMessage(
         "Bravo ! Vous avez trouvé le Pokémon ! Essaie de l'attraper !"
@@ -201,6 +202,7 @@ function App() {
                 Valider
               </div>
             </div>
+            <p>{resultMessage}</p>
             {isPokemonFound && catchingprocess === "caught" ? (
               <DrawPokeball />
             ) : null}
