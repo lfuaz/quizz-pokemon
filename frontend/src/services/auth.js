@@ -48,7 +48,7 @@ const auth = {
         throw new Error(errorData.message);
       }
 
-      return response;
+      return await response.json();
     } catch (error) {
       throw new Error(error.message);
     }
@@ -162,8 +162,9 @@ const sendRegister = async (email, password) => {
 
 const sendConnexion = async (email, password) => {
   try {
-    await auth.login(email, password);
+    const { token } = await auth.login(email, password);
     sessionStorage.setItem("authentified", true);
+    sessionStorage.setItem("token", token);
   } catch (error) {
     throw error;
   }
@@ -183,6 +184,7 @@ const disconnect = async () => {
   try {
     await auth.logout();
     sessionStorage.removeItem("authentified");
+    sessionStorage.removeItem("token");
   } catch (error) {
     throw error;
   }

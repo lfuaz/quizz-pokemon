@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { User, Profile } = require("./models"); // Correctly import User model
 const db = require("./models");
+const WebSocket = require("ws");
 
 const app = express();
 
@@ -324,6 +325,58 @@ app.get("/auth/logout", (req, res) => {
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+});
+
+// WebSocket server setup
+const wss = new WebSocket.Server({
+  port: 3030,
+  host: "0.0.0.0",
+});
+
+const sendMessage = (ws, message) => {
+  console.log(typeof message);
+
+  ws.send(typeof message != "object" ? message : JSON.stringify(message));
+};
+
+wss.on("connection", (ws, req) => {
+  const urlParams = new URLSearchParams(req.url.replace("/?", ""));
+  const token = urlParams.get("token");
+
+  if (token) {
+    // Verify the token
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
+      if (err) {
+        // If token expired or invalid, notify the client
+        sendMessage(ws, {
+          status: "not connected",
+          message: "Token expired or invalid",
+        });
+        ws.close();
+      } else {
+        // Token is valid, notify the client
+        sendMessage(ws, "authentified");
+      }
+    });
+  } else {
+    sendMessage(ws, "failed");
+    ws.close();
+  }
+
+  //   jwt.verify(token, JWT_SECRET, (err, decoded) => {
+  //     if (err) {
+  //       ws.send(JSON.stringify({ message: "Failed to authenticate token" }));
+  //       ws.close();
+  //       return;
+  //     }
+
+  //     const userId = decoded.userId;
+  //     connectedUsers.set(userId, ws);
+
+  //     ws.on("close", () => {
+  //       connectedUsers.delete(userId);
+  //     });
+  //   });
 });
 
 // Function to get the profile

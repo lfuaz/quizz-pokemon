@@ -46,12 +46,20 @@ function App() {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      checking();
-    }, 10000);
+    const socket = new WebSocket(
+      `ws://127.0.0.1:3030?token=${sessionStorage.getItem("token")}`
+    );
 
-    return () => {
-      clearInterval(interval);
+    socket.onmessage = (event) => {
+      console.log(event.data);
+
+      if (event.data === "authentified") {
+        setNotConnected(false);
+      } else {
+        setNotConnected(true);
+        setTypeMessage("warning");
+        setMessage("Vous n'êtes pas connecté !");
+      }
     };
   }, []);
 
@@ -140,7 +148,6 @@ function App() {
         id="real-app"
         style={{
           zIndex: 2,
-          backdropFilter: "blur(10px)",
           width: "100%",
           height: "100%",
           padding: "1.3rem",

@@ -35,8 +35,6 @@ $types: (
 }
 
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
   text-align: center;
   @media screen and (max-width: 768px) {
     padding: 0;
@@ -83,7 +81,6 @@ $types: (
   display: flex;
   background-color: #e6c7ff1c;
   border-radius: 5px;
-  width: fit-content;
   padding: 12px;
   gap: 12px;
   max-width: 100%;

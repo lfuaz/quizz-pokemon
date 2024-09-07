@@ -9,21 +9,7 @@ import ily from "../assets/ily.png";
 const Profil = React.memo(() => {
   const [data, setData] = useState(null);
   const [showShiny, setShowShiny] = useState(false);
-  const [spawn, setSpawn] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSpawn((spawn) => {
-        if (spawn < 10) {
-          return spawn + 1;
-        } else {
-          clearInterval(interval);
-          return spawn;
-        }
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
   const pokemons = new Array(151).fill(false);
 
   const fetchData = async () => {
@@ -38,6 +24,12 @@ const Profil = React.memo(() => {
   useEffect(() => {
     fetchData();
   }, []); // Ensure the dependency array is empty to run only once on mount
+
+  useEffect(() => {
+    if (data) {
+      console.log(data.achievements);
+    }
+  }, [data]);
 
   return data ? (
     <>
@@ -55,45 +47,53 @@ const Profil = React.memo(() => {
         <FaStar />
       </span>
       <div className="pokemon-list">
-        {!showShiny ? (
-          pokemons.map((pokemon, index) =>
-            JSON.parse(data.user.achievements).indexOf(index + 1) == -1 ? (
-              <div key={index} className="pokemon">
-                <FaQuestion
-                  style={{
-                    color: "grey",
-                    fontSize: "40px",
-                    position: "absolute",
-                    opacity: 0.1,
-                  }}
-                />
-                <span>#{index + 1}</span>
-              </div>
-            ) : (
-              <div key={index} className="pokemon">
-                <img
-                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-                    index + 1
-                  }.png`}
-                />
-              </div>
+        {!showShiny
+          ? pokemons.map((pokemon, index) =>
+              JSON.parse(data.user.achievements).indexOf(index + 1) == -1 ? (
+                <div key={index} className="pokemon">
+                  <FaQuestion
+                    style={{
+                      color: "grey",
+                      fontSize: "40px",
+                      position: "absolute",
+                      opacity: 0.1,
+                    }}
+                  />
+                  <span>#{index + 1}</span>
+                </div>
+              ) : (
+                <div key={index} className="pokemon">
+                  <img
+                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                      index + 1
+                    }.png`}
+                  />
+                </div>
+              )
             )
-          )
-        ) : spawn === 10 ? (
-          <img
-            src={ily}
-            style={{
-              width: "100%",
-              height: "auto",
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-            }}
-          />
-        ) : (
-          <p>spawn de shiny dans {parseInt(10 - parseInt(spawn))} s'</p>
-        )}
+          : pokemons.map((pokemon, index) =>
+              JSON.parse(data.user.achievements).indexOf(index + 1) == -1 ? (
+                <div key={index} className="pokemon">
+                  <FaQuestion
+                    style={{
+                      color: "grey",
+                      fontSize: "40px",
+                      position: "absolute",
+                      opacity: 0.1,
+                    }}
+                  />
+                  <span>#{index + 1}</span>
+                </div>
+              ) : (
+                <div key={index} className="pokemon">
+                  <img
+                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${
+                      index + 1
+                    }.png`}
+                  />
+                </div>
+              )
+            )}
       </div>
     </>
   ) : (
