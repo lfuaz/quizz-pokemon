@@ -14,29 +14,11 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: "/app/scripts/wait-for-it.sh -t 10 db:3306 -- npm run start"
     environment:
-      MYSQL_URI: mysql://${DB_USER}:${DB_PASSWORD}@db:3306/${DB_USER}
+      MYSQL_URI: mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_USER}
       CORS_WHITELIST: ${CORS_WHITELIST}
       JWT_SECRET: ${JWT_SECRET}
       NODE_ENV: ${NODE_ENV}
-    depends_on:
-      - db
     ports:
       - "3000:3000"
       - "3030:3030"
-
-  db:
-    image: mariadb:11.5
-    environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      MYSQL_DATABASE: ${DB_USER}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - ./data:/var/lib/mysql
-
-  adminer:
-    image: adminer:latest
-    depends_on:
-      - db
