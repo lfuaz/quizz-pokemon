@@ -1,9 +1,7 @@
-import { useEffect, useState } from "react";
-import { showProfil } from "../services/auth.js";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaQuestion, FaStar } from "react-icons/fa";
+import { showProfil } from "../services/auth.js";
 
-import ily from "../assets/ily.png";
 ("react-icons/fa");
 
 const Profil = React.memo(() => {
@@ -24,12 +22,6 @@ const Profil = React.memo(() => {
   useEffect(() => {
     fetchData();
   }, []); // Ensure the dependency array is empty to run only once on mount
-
-  useEffect(() => {
-    if (data) {
-      console.log(data.achievements);
-    }
-  }, [data]);
 
   return data ? (
     <>

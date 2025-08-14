@@ -1,24 +1,18 @@
 {
-  "development": {
-    "username": "mariadb",
-    "password": "gk3pC1LIcgwkXRytGIOK4sUTHYr0MtFSRQdbRpHz5CAZuqXL9lpEaAd9Mc1vpNsS",
-    "database": "default",
-    "host": "192.168.30.9",
-    "dialect": "mysql",
-    "port" : 3333
-  },
-  "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
   "production": {
     "username": "pokequizz",
-    "password": "gk3pC1LIcgwkXRytGIOK4sUTHYr0MtFSRQdbRpHz5CAZuqXL9lpEaAd9Mc1vpNsS",
+    "password": "lieurbhgeg651ergerge61e",
     "database": "pokequizz",
-    "host": "db",
-    "dialect": "mysql"
+    "host": "florianurena.ovh",
+    "dialect": "mysql",
+    "port": 9844
+  },
+  "development": {
+    "username": "pokequizz",
+    "password": "lieurbhgeg651ergerge61e",
+    "database": "pokequizz",
+    "host": "florianurena.ovh",
+    "dialect": "mysql",
+    "port": 9844
   }
 }

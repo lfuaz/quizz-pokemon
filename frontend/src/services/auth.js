@@ -1,9 +1,7 @@
 //create a auth service using fetch api
 
 const api = async (endpoint, options) => {
-  const baseUrl = import.meta.env.VITE_API_URL;
-  const url = `${baseUrl}${endpoint}`;
-  const response = await fetch(url, options);
+  const response = await fetch(endpoint, options);
   return response;
 };
 
@@ -25,7 +23,7 @@ const auth = {
         throw new Error(errorData.message);
       }
 
-      return response;
+      return await response.json();
     } catch (error) {
       throw new Error(error.message);
     }
@@ -153,8 +151,9 @@ const catchPokemon = async (pokemonId) => {
 
 const sendRegister = async (email, password) => {
   try {
-    await auth.signup(email, password);
+    const { token } = await auth.signup(email, password);
     sessionStorage.setItem("authentified", true);
+    sessionStorage.setItem("token", token);
   } catch (error) {
     throw error;
   }
@@ -191,10 +190,11 @@ const disconnect = async () => {
 };
 
 export {
-  sendRegister,
-  sendConnexion,
-  showProfil,
-  disconnect,
   catchPokemon,
   checkHealthToken,
+  disconnect,
+  sendConnexion,
+  sendRegister,
+  showProfil,
 };
+

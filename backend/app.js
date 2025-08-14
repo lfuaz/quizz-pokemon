@@ -9,6 +9,7 @@ const bcrypt = require("bcryptjs");
 const { User, Profile } = require("./models"); // Correctly import User model
 const db = require("./models");
 const WebSocket = require("ws");
+const path = require("path");
 
 const app = express();
 
@@ -23,17 +24,40 @@ const whitelist = process.env.CORS_WHITELIST.split(",");
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like Postman)
-    if (!origin || whitelist.indexOf(origin) !== -1) {
+    // Allow requests with no origin (like Postman, static assets, etc.)
+    if (!origin) {
+      callback(null, true);
+      return;
+    }
+
+    // Check if wildcard is allowed
+    if (whitelist.includes("*")) {
+      callback(null, true);
+      return;
+    }
+
+    // Check if origin is in whitelist
+    if (whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
+      console.error("CORS blocked origin:", origin);
       callback(new Error("Not allowed by CORS"));
     }
   },
   credentials: true,
 };
 
-app.use(cors(corsOptions));
+// Apply CORS only to API routes, not to static files
+app.use((req, res, next) => {
+  // Skip CORS for static assets (CSS, JS, images, etc.)
+  if (
+    req.path.match(/\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/)
+  ) {
+    return next();
+  }
+  // Apply CORS middleware for other routes
+  cors(corsOptions)(req, res, next);
+});
 db.sequelize.sync();
 
 // JWT Secret Key
@@ -115,14 +139,14 @@ const checkAuthToken = (req, res, next) => {
 };
 
 app.get("/auth/whoami", checkAuthToken, async (req, res) => {
-  const user = await getProfile(req.user.id);
+  const user = await getProfile(req.user.userId);
 
   res.status(200).json({ user });
 });
 
 app.get("/user/profil", checkAuthToken, async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
 
     const profile = await getProfile(userId);
     if (!profile) {
@@ -169,7 +193,7 @@ app.put(
   checkAuthToken,
   async (req, res) => {
     try {
-      const userId = req.user.id;
+      const userId = req.user.userId;
       const achievementId = req.params.id;
 
       const profile = await getProfile(userId);
@@ -240,7 +264,10 @@ app.post("/auth/signup", async (req, res) => {
       path: "/",
     });
 
-    res.status(201).json({ message: translations[req.lang].userRegistered });
+    res.status(201).json({
+      message: translations[req.lang].userRegistered,
+      token: token,
+    });
   } catch (error) {
     console.log(error);
 
@@ -281,7 +308,7 @@ app.post("/auth/login", async (req, res) => {
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
+    const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
       expiresIn: "1h",
     });
 
@@ -322,20 +349,45 @@ app.get("/auth/logout", (req, res) => {
   res.status(200).json({ message: translations[req.lang].logoutSuccess });
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+// serve static files from public folder with proper MIME types
+app.use(
+  express.static(path.join(__dirname, "public"), {
+    setHeaders: (res, path) => {
+      if (path.endsWith(".css")) {
+        res.setHeader("Content-Type", "text/css");
+      } else if (path.endsWith(".js")) {
+        res.setHeader("Content-Type", "application/javascript");
+      }
+    },
+  })
+);
+
+// Catch-all handler: send back React's index.html file for any non-API routes
+app.get("*", (req, res) => {
+  // Only serve index.html for non-API routes and non-static files
+  if (
+    !req.path.startsWith("/api") &&
+    !req.path.startsWith("/auth") &&
+    !req.path.startsWith("/user") &&
+    !req.path.startsWith("/protected")
+  ) {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+  } else {
+    res.status(404).json({ message: "Route not found" });
+  }
 });
 
-// WebSocket server setup
+// Start the server
+const server = app.listen(PORT, () => {
+  console.info(`Server is running on port ${PORT}`);
+});
+
+// WebSocket server setup - attach to the same HTTP server
 const wss = new WebSocket.Server({
-  port: 3030,
-  host: "0.0.0.0",
+  server: server,
 });
 
 const sendMessage = (ws, message) => {
-  console.log(typeof message);
-
   ws.send(typeof message != "object" ? message : JSON.stringify(message));
 };
 
@@ -356,27 +408,22 @@ wss.on("connection", (ws, req) => {
       } else {
         // Token is valid, notify the client
         sendMessage(ws, "authentified");
+
+        // Store the connection with the user ID
+        const userId = decoded.userId;
+        // You can store this connection for future use
+        // connectedUsers.set(userId, ws);
+
+        ws.on("close", () => {
+          // Clean up when connection closes
+          // connectedUsers.delete(userId);
+        });
       }
     });
   } else {
     sendMessage(ws, "failed");
     ws.close();
   }
-
-  //   jwt.verify(token, JWT_SECRET, (err, decoded) => {
-  //     if (err) {
-  //       ws.send(JSON.stringify({ message: "Failed to authenticate token" }));
-  //       ws.close();
-  //       return;
-  //     }
-
-  //     const userId = decoded.userId;
-  //     connectedUsers.set(userId, ws);
-
-  //     ws.on("close", () => {
-  //       connectedUsers.delete(userId);
-  //     });
-  //   });
 });
 
 // Function to get the profile

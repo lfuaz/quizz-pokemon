@@ -1,19 +1,17 @@
-import "./App.scss";
-import React, { useState } from "react";
-import { usePokemonDetails } from "./hook/usePokemonDetails";
-import { PokemonDescription } from "./components/PokemonInfo";
-import { Helper } from "./components/PokemonInfo";
-import DrawPokeball from "./components/DrawPokeball";
-import { randomId, capitalize } from "./utils/utils";
-import Navigation from "./components/Navigation";
-import { pokemonNames } from "./data/pokemonNames.js";
-import Dialog from "./components/Dialog";
-import { useEffect } from "react";
-import { catchPokemon, checkHealthToken } from "./services/auth";
-import pokeballSvg from "./assets/pokeball.svg";
+import { useEffect, useState } from "react";
 import Countdown from "react-countdown";
+import "./App.scss";
+import pokeballSvg from "./assets/pokeball.svg";
+import Dialog from "./components/Dialog";
+import DrawPokeball from "./components/DrawPokeball";
 import FunnyBackground from "./components/FunnyBackground";
+import Navigation from "./components/Navigation";
 import Notif from "./components/Notif";
+import { Helper, PokemonDescription } from "./components/PokemonInfo";
+import { pokemonNames } from "./data/pokemonNames.js";
+import { usePokemonDetails } from "./hook/usePokemonDetails";
+import { catchPokemon, checkHealthToken } from "./services/auth";
+import { randomId } from "./utils/utils";
 
 function App() {
   const [authentified, setAuthentified] = useState(
@@ -47,12 +45,10 @@ function App() {
 
   useEffect(() => {
     const socket = new WebSocket(
-      `ws://127.0.0.1:3030?token=${sessionStorage.getItem("token")}`
+      `wss://${location.host}?token=${sessionStorage.getItem("token")}`
     );
 
     socket.onmessage = (event) => {
-      console.log(event.data);
-
       if (event.data === "authentified") {
         setNotConnected(false);
       } else {
